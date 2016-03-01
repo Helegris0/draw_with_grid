@@ -36,7 +36,11 @@ function createTable(selector) {
 				$('<td>').click(
 					function(event) {
 						var color = $("input[name=color]:checked").val();
-						$(this).toggleClass(color);
+						var hasOtherColor = !$(this).hasClass(color);
+						$(this).removeClass();
+						if (hasOtherColor) {
+							$(this).addClass(color);
+						}
 					}
 				)
 			);
