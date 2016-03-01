@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8 />
+<meta charset="utf-8" />
 <title>CLOCK</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <style>
-	td{
-		border:1px solid black;
+	td {
+		border: 1px solid black;
 		width: 20px;
 		height: 20px;
 	}
-	td.black{
-		background-color:black;
+
+	td.red {
+		background-color:red;
+	}
+
+	td.green {
+		background-color:green;
+	}
+
+	td.blue {
+		background-color:blue;
 	}
 </style>
 
 <script>
-function createTable(selector){
+function createTable(selector) {
 	var i, j;
 	var $table = $('<table>');
 
-	for(i=0;i<8;i++){
+	for(i=0; i<8; i++) {
 		var $tr = $('<tr>');
-		for(j=0;j<8;j++){
+		for(j=0; j<8; j++) {
 			$tr.append(
 				$('<td>').click(
-					function(event){
-						$(this).toggleClass('black');
+					function(event) {
+						var color = $("input[name=color]:checked").val();
+						$(this).toggleClass(color);
 					}
 				)
 			);
@@ -37,24 +47,20 @@ function createTable(selector){
 	$(selector).append($table);
 }
 
-window.onload = function(){
+window.onload = function() {
 	createTable('#tableholder');
 }
-
-//.click(function(){$(this).toggleClass('black');})
 </script>
 
 
 </head>
 <body>
   <div id="tableholder"></div>
-  Feladatok
-  <ol>
-	  <li>Lehessen színeket is használni a rajzoláshoz</li>
-	  <li>Lehessen menteni a rajzunkat</li>
-	  <li>Be is lehessen tölteni a rajzot (localstorage)</li>
-  </ol>
-  
+  <form>
+  	<input type="radio" name="color" value="red" checked> Red<br>
+  	<input type="radio" name="color" value="green"> Green<br>
+  	<input type="radio" name="color" value="blue"> Blue
+  </form>
 </body>
 
 </html>
