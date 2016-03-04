@@ -25,6 +25,7 @@
 </style>
 
 <script>
+var lsName = "drawing";
 var classToJsonMap = {"":"0", "red":"R", "green":"G", "blue":"B"};
 var jsonToClassMap = {"0":"", "R":"red", "G":"green", "B":"blue"};
 
@@ -55,13 +56,41 @@ function createTable(selector) {
 	$(selector).append($table);
 }
 
-function loadDrawing() {
+function loadDrawing(selector) {
+	var json = localStorage.getItem(lsName);
+	var drawing = JSON.parse(json);
 
+	$(selector).empty();
+
+	var $table = $('<table>');
+	$table.attr('id', 'drawingTable');
+
+	$.each(drawing, function(i, row) {
+		var $tr = $('<tr>');
+			$.each(row, function(j, tile) {
+				var $td = $('<td>');
+				$td.addClass(jsonToClassMap[tile]);
+				$tr.append(
+					$td.click(
+						function(event) {
+							var color = $("input[name=color]:checked").val();
+							var hasOtherColor = !$(this).hasClass(color);
+							$(this).removeClass();
+							if (hasOtherColor) {
+								$(this).addClass(color);
+							}
+						}
+					)
+				);
+			});
+			$table.append($tr);
+	});
+	$(selector).append($table);
 }
 
-function saveDrawing() {
+function saveDrawing(selector) {
 	var drawing = [];
-	$('#drawingTable').find('tr').each(function() {
+	$(selector).find('tr').each(function() {
     var row = [];
 		$td = $(this).find('td').each(function() {
 			var color = "";
@@ -70,18 +99,18 @@ function saveDrawing() {
 		});
     drawing.push(row);
 	});
-	localStorage.setItem("drawing", JSON.stringify(drawing));
+	localStorage.setItem(lsName, JSON.stringify(drawing));
 }
 
 $(document).ready(function() {
   $("#loaderButton").click(function() {
-    loadDrawing();
+    loadDrawing('#tableholder');
   });
 });
 
 $(document).ready(function() {
   $("#saverButton").click(function() {
-    saveDrawing();
+    saveDrawing('#tableholder');
   });
 });
 
