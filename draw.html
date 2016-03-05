@@ -37,23 +37,22 @@ function createTable(selector) {
 	for(i=0; i<8; i++) {
 		var $tr = $('<tr>');
 		for(j=0; j<8; j++) {
-			$tr.append(
-				$('<td>').click(
-					function(event) {
-						var color = $("input[name=color]:checked").val();
-						var hasOtherColor = !$(this).hasClass(color);
-						$(this).removeClass();
-						if (hasOtherColor) {
-							$(this).addClass(color);
-						}
-					}
-				)
-			);
+			var $td = $('<td>');
+			$tr.append($td);
+			$td.bind("click", editColoring);
 		}
 		$table.append($tr);
 	}
-
 	$(selector).append($table);
+}
+
+function editColoring(event) {
+	var color = $("input[name=color]:checked").val();
+	var hasOtherColor = !$(this).hasClass(color);
+	$(this).removeClass();
+	if (hasOtherColor) {
+		$(this).addClass(color);
+	}
 }
 
 function loadDrawing(selector) {
@@ -70,18 +69,8 @@ function loadDrawing(selector) {
 			$.each(row, function(j, tile) {
 				var $td = $('<td>');
 				$td.addClass(jsonToClassMap[tile]);
-				$tr.append(
-					$td.click(
-						function(event) {
-							var color = $("input[name=color]:checked").val();
-							var hasOtherColor = !$(this).hasClass(color);
-							$(this).removeClass();
-							if (hasOtherColor) {
-								$(this).addClass(color);
-							}
-						}
-					)
-				);
+				$tr.append($td);
+				$td.bind("click", editColoring);
 			});
 			$table.append($tr);
 	});
